@@ -46,10 +46,7 @@ try{
 		</footer>
 		<%
 	} else {
-		%>
-		<a href="home.jsp"> Home</a> <br/>
-		<a href="logout.jsp">Log Out</a>
-		<%
+		response.sendRedirect("home.jsp");
 	}
 } catch (Exception e) {
 	response.sendRedirect("login.jsp");

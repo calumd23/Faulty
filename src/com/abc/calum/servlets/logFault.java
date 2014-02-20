@@ -16,9 +16,9 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- * Servlet implementation class loginServlet
+ * Servlet implementation class loginFault
  */
-@WebServlet("/loginServlet")
+@WebServlet("/logFault")
 public class logFault extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -66,7 +66,7 @@ public class logFault extends HttpServlet {
 				
 				
 			ps.executeUpdate();
-			response.sendRedirect("/Faulty/Faults");
+			response.sendRedirect("home.jsp");
 			
 			
 				
