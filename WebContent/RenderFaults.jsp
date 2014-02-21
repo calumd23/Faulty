@@ -27,6 +27,15 @@ try{
 		<%
 		} 
 		else {
+			%>
+			<a href="viewSection?id=1">All Cassandra Faults</a>
+			<br>
+			<a href="viewSection?id=2">All Hadoop Faults</a>
+			<br>
+			<a href="viewSection?id=3">All Debian Faults</a>
+			<br>
+			<br>
+			<%
 		
 		Iterator<FaultsStore> iterator;
 		

@@ -24,7 +24,8 @@ import com.abc.calum.models.*;
 @WebServlet(
 		urlPatterns = { 
 				"/Faults", 
-				"/Fault/*"
+				"/Fault/*",
+				"/"
 		}, 
 		initParams = { 
 				@WebInitParam(name = "data-source", value = "jdbc/faultdb")
@@ -49,8 +50,10 @@ public class Fault extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// 
+		System.out.println("Fault.java init");
 		Dbutils db = new Dbutils();
-        _ds=db.assemble(config);
+		db.createSchema();
+		_ds=db.assemble(config);
 	}
 
 	/**

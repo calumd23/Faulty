@@ -84,7 +84,7 @@ public class viewSection extends HttpServlet {
 		request.setAttribute("summaries",summaries);
 		request.setAttribute("sectionID", request.getParameter("id"));
 		
-		RequestDispatcher rd = request.getRequestDispatcher("viewAuthorFaults.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("viewSectionFaults.jsp");
 		
 		rd.forward(request,response);
 	}
