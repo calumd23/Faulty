@@ -14,7 +14,7 @@ public class FaultModel {
 
 	public void setDatasource(DataSource _ds){
 		this._ds=_ds;
-		System.out.println("Set Data Source in Model"+_ds.toString());
+		//System.out.println("Set Data Source in Model"+_ds.toString());
 	}
 
     public LinkedList<FaultsStore> getFaults(){
@@ -33,7 +33,7 @@ public class FaultModel {
 		PreparedStatement pmst = null;
 		Statement stmt = null;
 		String sqlQuery = "select summary,idfault from fault";
-		System.out.println("Faults Query " + sqlQuery);
+		//System.out.println("Faults Query " + sqlQuery);
 		try {
 			try {
 				// pmst = Conn.prepareStatement(sqlQuery);
@@ -47,17 +47,17 @@ public class FaultModel {
 				// rs=pmst.executeQuery();
 				rs = stmt.executeQuery(sqlQuery);
 			} catch (Exception et) {
-				System.out.println("Can not execut query " + et);
+				System.out.println("Can not execute query " + et);
 				return null;
 			}
 			System.out.println("Statement executed");
 			if (rs.wasNull()) {
 				System.out.println("result set was null");
 			} else {
-				System.out.println("Well it wasn't null");
+				System.out.println("result set wasn't null");
 			}
 			while (rs.next()) {
-				System.out.println("Getting RS");
+				//System.out.println("Getting RS");
 				ps = new FaultsStore();
 				ps.setFaultid(rs.getString("idfault"));
 				ps.setFaultSummary(rs.getString("summary"));

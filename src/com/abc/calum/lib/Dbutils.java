@@ -1,6 +1,7 @@
 package com.abc.calum.lib;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -13,6 +14,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
+import com.mysql.jdbc.Statement;
+
 
 
 public class Dbutils {
@@ -24,7 +27,7 @@ public class Dbutils {
 				Binding item = (Binding) list.next();
 				String className = item.getClassName();
 				String name = item.getName();
-				System.out.println("" + className + " " + name);
+				//System.out.println("" + className + " " + name);
 				Object o = item.getObject();
 				if (o instanceof javax.naming.Context) {
 					listContext((Context) o, indent + " ");
@@ -41,15 +44,15 @@ public class Dbutils {
 	 public DataSource assemble(ServletConfig config) throws ServletException {
 		DataSource _ds = null;
 		String dataSourceName = config.getInitParameter("data-source");
-		System.out.println("Data Source Parameter" + dataSourceName);
+		//System.out.println("Data Source Parameter " + dataSourceName);
 		if (dataSourceName == null)
 			throw new ServletException("data-source must be specified");
 		Context envContext = null;
 		try {
 			Context ic = new InitialContext();
-			System.out.println("initial context " + ic.getNameInNamespace());
+			//System.out.println("initial context " + ic.getNameInNamespace());
 			envContext = (Context) ic.lookup("java:/comp/env");
-			System.out.println("envcontext  " + envContext);
+			//System.out.println("envcontext  " + envContext);
 			listContext(envContext, "");
 		} catch (Exception et) {
 			throw new ServletException("Can't get contexts " + et);
@@ -80,7 +83,12 @@ public class Dbutils {
 			return;
 		}
 		String sqlQuery = "CREATE TABLE IF NOT EXISTS `author` ("
-				+ "`idauthor` INT NOT NULL AUTO_INCREMENT," + "`name` VARCHAR(45) NULL,"
+				+ "`idauthor` INT NOT NULL AUTO_INCREMENT," 
+				+ "`uname` VARCHAR(45) NOT NULL,"
+				+ "`pass` VARCHAR(45) NOT NULL,"
+				+ "`firstName` VARCHAR(45) NOT NULL,"
+				+ "`lastName` VARCHAR(45) NOT NULL,"
+				+ "`permissions` ENUM('admin','dev') NOT NULL DEFAULT 'dev',"
 				+ "PRIMARY KEY (`idauthor`))" + "ENGINE = InnoDB;";
 		try {
 			pmst = Conn.prepareStatement(sqlQuery);
@@ -123,16 +131,25 @@ public class Dbutils {
 			System.out.println("Can not create table "+ex);
 			return;
 		}
+		System.out.println("Tables Created");
 		ResultSet rs=null;
-		sqlQuery="Select count(name) from author as rowcount";
+		sqlQuery="Select count(uname) from author as rowcount";
 		try {
 			pmst = Conn.prepareStatement(sqlQuery);
 			rs=pmst.executeQuery();
 			if(rs.next()) {
 			    int rows = rs.getInt(1);
-			    System.out.println("Number of Rows " + rows);
+			    //System.out.println("Number of Rows " + rows);
 			    if (rows==0){
-			    	sqlQuery="INSERT INTO `author` (`name`) VALUES ('Andy'),('Tracey'),('Tom'),('Bill');";
+			    	sqlQuery="INSERT INTO `author` (`uname`,`pass`,`firstName`,`lastName`,`permissions`) VALUES ('ASmith','password123','Andy','Smith','admin'),('TJones','password123','Tracey','Jones','dev');";
+					try {
+						pmst = Conn.prepareStatement(sqlQuery);
+						pmst.executeUpdate();
+					} catch (Exception ex) {
+						System.out.println("Can not insert names in authors "+ex);
+						return;
+					}
+					sqlQuery="INSERT INTO `author`(`uname`,`pass`,`firstName`,`lastName`,permissions) VALUES ('TBrown','password123','Tom','Brown','dev'),('BJeffreys','password123','Bill','Jeffreys','dev');";
 					try {
 						pmst = Conn.prepareStatement(sqlQuery);
 						pmst.executeUpdate();
@@ -166,6 +183,29 @@ public class Dbutils {
 
 
  
+
+	}
+
+	public void createSchema(){
+		String url = "jdbc:mysql://localhost";
+		Connection conn=null;
+		try {
+		   Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+		   conn = DriverManager.getConnection (url, "root", "Cl1m8t3;");
+
+		}catch (Exception et){
+			System.out.println("Can't get conenction to create schema "+et);
+			return;
+		}
+		String sqlcreateSchema="Create database if not exists faultdb ;";
+		try{
+			java.sql.Statement statement=conn.createStatement();
+			statement.execute(sqlcreateSchema);
+			conn.close();
+		}catch (Exception et){
+			System.out.println("Can not create schema ");
+			return;
+		}
 
 	}
 }

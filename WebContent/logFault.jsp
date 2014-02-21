@@ -10,7 +10,7 @@
 <%
 try{
 	System.out.println(session.getAttribute("permissions"));	
-	if((session.getAttribute("permissions").equals("admin")) || (session.getAttribute("permissions").equals("dev"))) 
+	if(session.getAttribute("loggedIn").equals("true")) 
 		{
 			%>
 			<form action="logFault" method="get" id="faultForm">
@@ -32,6 +32,7 @@ try{
 			</form>
 			<br>
 			<br>
+			<a href="home.jsp">Home</a>
 			<a href="logout.jsp">Log Out</a>
 			
 			

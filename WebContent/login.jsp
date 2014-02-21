@@ -7,14 +7,42 @@
 <title>Please Login</title>
 </head>
 <body>
+<% 
+try{
+	if(session.getAttribute("userCreated").equals("true")){
+		%> <p>Success! User Created. Please login below.<p> 
+		<%
+		session.removeAttribute("userCreated");
+	}
+} catch (Exception e){
+}
+
+
+try{
+	if(session.getAttribute("loggedIn").equals("true")) {
+		response.sendRedirect("home.jsp");
+	}
+	
+	
+} catch (Exception e){
+	%>
+
+
 	<form action="loginServlet" method="get">
 	<p>Enter Username:</p>
 	<input type="text" name="username" align="top">
 	<br>
 	<p>Enter Password:</p>
 	<input type="password" name="password" align="top">
+	<br><br>
 	<input type="submit" name="login" value="Login">
 	</form>
+	<br>
+	<a href="register.jsp">Register as Developer</a>
+	
+	<%
+	}
+	%>
 	
 </body>
 </html>

@@ -19,7 +19,7 @@ try{
 		%>
 		<h1>Faults</h1>
 		<%
-		System.out.println("In render");
+		System.out.println("Faults in render");
 		List<FaultsStore> lFaults = (List<FaultsStore>)request.getAttribute("Faults");
 		if (lFaults==null){
 		 %>
@@ -36,14 +36,16 @@ try{
 			FaultsStore md = (FaultsStore)iterator.next();
 		
 			%>
-			<a href="Fault/<%=md.getFaultid() %>" ><%=md.getFaultSummary() %></a><br><%
+			<a href="viewFault?id=<%=md.getFaultid() %>" ><%=md.getFaultSummary() %></a><br><%
 		
 		}
 		}
 		%>
-		<footer>
-		<p><a href="logout.jsp">Log Out</a>
-		</footer>
+		<br>
+		<br>
+		<a href="home.jsp">Home</a>
+		<a href="logout.jsp">Log Out</a>
+		
 		<%
 	} else {
 		response.sendRedirect("home.jsp");

@@ -6,46 +6,43 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
- * Servlet implementation class loginServlet
+ * Servlet implementation class viewAuthor
  */
-@WebServlet("/loginServlet")
-public class loginServlet extends HttpServlet {
+@WebServlet("/viewAuthor")
+public class viewAuthor extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public loginServlet() {
+    public viewAuthor() {
         super();
-        
+        // 
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("Login Started");
-		
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String idNum = request.getParameter("id");
 		
-		String stmt = "SELECT * FROM author WHERE uname=? AND pass=?";
+		String stmt = "SELECT idfault,summary FROM fault WHERE author_idauthor =?";
+		LinkedList<String> faultIds = new LinkedList<String>();
+		LinkedList<String> summaries = new LinkedList<String>();
 		
 		
 		
@@ -56,36 +53,21 @@ public class loginServlet extends HttpServlet {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/faultdb","root","Cl1m8t3;");
 			
 			ps = con.prepareStatement(stmt);
-				ps.setString(1, username);
-				ps.setString(2, password);
+				ps.setString(1, idNum);
+				
 				
 			rs=ps.executeQuery();
 			
-			if (rs.next()) {
+			while (rs.next()) {
 				
-				HttpSession session = request.getSession(true);
-				session.setAttribute("username", rs.getString("uname"));
-				session.setAttribute("id", rs.getInt("idauthor"));
-				session.setAttribute("permissions", rs.getString("permissions"));
-				session.setAttribute("loggedIn", "true");
-				String permissions = rs.getString("permissions");
+				String id = rs.getString("idfault");
+				String summary = rs.getString("summary");
 				
-				if(permissions.equals("admin"))
-				{
-					System.out.println("Admin Logged In");
-				}
-				else if (permissions.equals("dev"))
-				{
-					System.out.println("Developer Logged In");
-				}
-				
-				response.sendRedirect("home.jsp");
+				faultIds.add(id);
+				summaries.add(summary);
 				
 			}
-			else
-			{
-				response.sendRedirect("loginFailure.jsp");
-			}
+			
 				
 		} catch (Exception e)
 		{
@@ -98,13 +80,20 @@ public class loginServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		request.setAttribute("faultIds", faultIds);
+		request.setAttribute("summaries",summaries);
+		request.setAttribute("authorID", request.getParameter("id"));
+		
+		RequestDispatcher rd = request.getRequestDispatcher("viewAuthorFaults.jsp");
+		
+		rd.forward(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// 
 	}
 
 }

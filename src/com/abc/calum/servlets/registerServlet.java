@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,20 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
- * Servlet implementation class loginServlet
+ * Servlet implementation class registerServlet
  */
-@WebServlet("/loginServlet")
-public class loginServlet extends HttpServlet {
+@WebServlet("/registerServlet")
+public class registerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public loginServlet() {
+    public registerServlet() {
         super();
-        
+        // 
     }
 
 	/**
@@ -36,16 +33,17 @@ public class loginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("Login Started");
-		
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		HttpSession session = request.getSession(true);
 		
-		String stmt = "SELECT * FROM author WHERE uname=? AND pass=?";
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String uname = request.getParameter("uname");
+		String pass = request.getParameter("pass");
+		
+		String stmt = "INSERT INTO author (uname, pass, firstName, lastName) VALUES (?,?,?,?)";
 		
 		
 		
@@ -56,36 +54,18 @@ public class loginServlet extends HttpServlet {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/faultdb","root","Cl1m8t3;");
 			
 			ps = con.prepareStatement(stmt);
-				ps.setString(1, username);
-				ps.setString(2, password);
+				ps.setString(1, uname);
+				ps.setString(2, pass);
+				ps.setString(3,firstName);
+				ps.setString(4,lastName);
 				
-			rs=ps.executeQuery();
+				
+				
+			ps.executeUpdate();
+			session.setAttribute("userCreated","true");
+			response.sendRedirect("login.jsp");
 			
-			if (rs.next()) {
-				
-				HttpSession session = request.getSession(true);
-				session.setAttribute("username", rs.getString("uname"));
-				session.setAttribute("id", rs.getInt("idauthor"));
-				session.setAttribute("permissions", rs.getString("permissions"));
-				session.setAttribute("loggedIn", "true");
-				String permissions = rs.getString("permissions");
-				
-				if(permissions.equals("admin"))
-				{
-					System.out.println("Admin Logged In");
-				}
-				else if (permissions.equals("dev"))
-				{
-					System.out.println("Developer Logged In");
-				}
-				
-				response.sendRedirect("home.jsp");
-				
-			}
-			else
-			{
-				response.sendRedirect("loginFailure.jsp");
-			}
+			
 				
 		} catch (Exception e)
 		{
@@ -97,14 +77,13 @@ public class loginServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// 
 	}
 
 }

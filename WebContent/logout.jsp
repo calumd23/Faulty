@@ -11,6 +11,7 @@
 	session.removeAttribute("username");
 	session.removeAttribute("id");
 	session.removeAttribute("permissions");
+	session.setAttribute("loggedIn","false");
 	
 	session.invalidate();
 	
