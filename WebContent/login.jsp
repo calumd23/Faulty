@@ -39,6 +39,8 @@ try{
 	</form>
 	<br>
 	<a href="register.jsp">Register as Developer</a>
+	<br> <br>
+	Calum Duncan - Faulty - AC32007 Assignment 1
 	
 	<%
 	}

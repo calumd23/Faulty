@@ -7,6 +7,16 @@
 <title>Register as Developer</title>
 </head>
 <body>
+<%
+try{
+	if(session.getAttribute("loggedIn").equals("true")) {
+		response.sendRedirect("home.jsp");
+	}
+	
+	
+} catch (Exception e){
+	%>
+
 <h2>Register as Developer</h2>
 <h3>To register, please fill in the following details:</h3>
 
@@ -23,6 +33,7 @@
 	<br><br>
 	<input type="submit" name="register" value="Register">
 	</form>
+	<% } %>
 
 </body>
 </html>

@@ -7,8 +7,23 @@
 <title>Failed Login</title>
 </head>
 <body>
+<%
+try{
+	if(session.getAttribute("loggedIn").equals("true")) {
+		response.sendRedirect("home.jsp");
+	}
+	
+	
+} catch (Exception e){
+%>
 	Login Details Not Recognised. Click
 	<a href= "login.jsp"> Here</a>
 	to try again.
+	
+<%
+
+}
+
+%>
 </body>
 </html>

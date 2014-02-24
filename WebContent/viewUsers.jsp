@@ -15,15 +15,18 @@ try{
 		
 		List<String> unames = (List<String>)request.getAttribute("usernames");
 		List<String> permissions = (List<String>)request.getAttribute("permissions");
+		List<String> enableds = (List<String>)request.getAttribute("enableds");
 		
 		if (unames == null){
 			%> <p>No other usernames were found</p> <%
 		}else{
 			Iterator<String> iterator;
 			Iterator<String> iterator2;
+			Iterator<String> iterator3;
 			
 			iterator = unames.iterator();
 			iterator2 = permissions.iterator();
+			iterator3 = enableds.iterator();
 			
 			%>
 			
@@ -37,10 +40,18 @@ try{
 						
 						String name = (String)iterator.next();
 						String perm = (String)iterator2.next();
+						String enab = (String)iterator3.next();
+						String enabInfo = null;
+						
+						if(enab.equals("true")){
+							enabInfo = "Account Enabled";
+						} else if (enab.equals("false")){
+							enabInfo = "Account Disabled";
+						}
 						
 						%>
 						
-						<option value=<%=name + ";" + perm%>> <%=name + " - " + perm %> </option>
+						<option value=<%=name + ";" + perm + ";" + enab%>> <%=name + " - " + perm + " - " + enabInfo%> </option>
 						<%
 					}
 				
@@ -52,7 +63,7 @@ try{
 				}%>
 				
 				<input type="submit" name="submit" value="Change Permissions">
-				<input type="submit" name="submit" value="Delete User">
+				<input type="submit" name="submit" value="Enable/Disable Account">
 			
 			
 			</form>

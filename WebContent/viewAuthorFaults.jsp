@@ -11,7 +11,10 @@
 	<%
 	
 try{
-	if(session.getAttribute("loggedIn").equals("true")) {
+	String authorID = request.getAttribute("authorID").toString();
+	String myID = session.getAttribute("id").toString();
+	
+	if(session.getAttribute("permissions").equals("admin") || myID.equals(authorID)) {
 		%><h2>Viewing Faults by Author: <%=request.getAttribute("authorID") %></h2><%
 		List<String> faultIds = (List<String>)request.getAttribute("faultIds");
 		List<String> summaries = (List<String>)request.getAttribute("summaries");

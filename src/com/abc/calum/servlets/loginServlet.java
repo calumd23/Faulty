@@ -65,7 +65,7 @@ public class loginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		String stmt = "SELECT * FROM author WHERE uname=? AND pass=?";
+		String stmt = "SELECT * FROM author WHERE uname=? AND pass=? AND enabled=?";
 		
 		
 		
@@ -78,6 +78,7 @@ public class loginServlet extends HttpServlet {
 			ps = con.prepareStatement(stmt);
 				ps.setString(1, username);
 				ps.setString(2, password);
+				ps.setString(3, "true");
 				
 			rs=ps.executeQuery();
 			

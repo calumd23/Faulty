@@ -44,9 +44,10 @@ public class viewUsers extends HttpServlet {
 
 
 
-		String stmt = "SELECT uname,permissions FROM author WHERE idauthor !=?";
+		String stmt = "SELECT uname,permissions,enabled FROM author WHERE idauthor !=?";
 		LinkedList<String> unames = new LinkedList<String>();
 		LinkedList<String> permissions = new LinkedList<String>();
+		LinkedList<String> enableds = new LinkedList<String>();
 		
 		try {
 			HttpSession session = request.getSession(true);
@@ -63,9 +64,11 @@ public class viewUsers extends HttpServlet {
 				
 				String uname = rs.getString("uname");
 				String perm = rs.getString("permissions");
+				String enab = rs.getString("enabled");
 				
 				unames.add(uname);
 				permissions.add(perm);
+				enableds.add(enab);
 				
 				
 			}
@@ -84,6 +87,7 @@ public class viewUsers extends HttpServlet {
 		
 		request.setAttribute("usernames",unames);
 		request.setAttribute("permissions",permissions);
+		request.setAttribute("enableds", enableds);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("viewUsers.jsp");
 		

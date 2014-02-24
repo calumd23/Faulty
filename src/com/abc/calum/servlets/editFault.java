@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class editUser
+ * Servlet implementation class editFault
  */
-@WebServlet("/editUser")
-public class editUser extends HttpServlet {
+@WebServlet("/editFault")
+public class editFault extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public editUser() {
+    public editFault() {
         super();
         // 
     }
@@ -34,22 +34,14 @@ public class editUser extends HttpServlet {
 		Connection con = null;
 		PreparedStatement ps = null;
 		
-		String[] unameperms = request.getParameter("uname").split(";");
-		String uname = unameperms[0];
-		String perms = unameperms[1];
-		String enab = unameperms[2];
+		String faultID = request.getParameter("id");
+		System.out.println("faultID = " + faultID);
+		String function = request.getParameter("function");
+		System.out.println("function = " + function);
 		
-		System.out.println(request.getParameter("uname"));
-		System.out.println(uname);
-		System.out.println(perms);
-		System.out.println(enab);
-		
-		
-		System.out.println(request.getParameter("submit"));
-		
-			if(request.getParameter("submit").equals("Change Permissions")){
-				
-				String stmt = "UPDATE author SET permissions=? WHERE uname=?";
+		if(function.equals("1")){
+				//Mark Solved
+				String stmt = "UPDATE fault SET solved=? WHERE idfault=?";
 				
 				
 				
@@ -60,25 +52,20 @@ public class editUser extends HttpServlet {
 					con = DriverManager.getConnection("jdbc:mysql://localhost:3306/faultdb","root","Cl1m8t3;");
 					
 					ps = con.prepareStatement(stmt);
-					if(perms.equals("admin")){
-						ps.setString(1, "dev");
-					} else {
-						ps.setString(1,"admin");
-					}
-						
-						ps.setString(2, uname);
+						ps.setString(1, "true");
+						ps.setString(2, faultID);
 						
 						
 						
 					ps.executeUpdate();
 					
-					response.sendRedirect("viewUsers");
+					response.sendRedirect("viewFault?id=" + faultID);
 					
 					
 						
 				} catch (Exception e) {
 					System.out.println(e);
-					response.sendRedirect("viewUsers");
+					response.sendRedirect("viewFault?id=" + faultID);
 				}
 				
 				try {
@@ -87,9 +74,9 @@ public class editUser extends HttpServlet {
 					e.printStackTrace();
 				} 
 				
-			} else if (request.getParameter("submit").equals("Enable/Disable Account")){
-			
-			String stmt = "UPDATE author SET enabled=? WHERE uname=?";
+			} else if (function.equals("2")){
+			//Delete Fault
+			String stmt = "DELETE FROM fault WHERE idfault=?";
 			
 			
 			
@@ -101,25 +88,19 @@ public class editUser extends HttpServlet {
 				
 				
 				ps = con.prepareStatement(stmt);
-				if(enab.equals("true")){
-					ps.setString(1, "false");
-				} else {
-					ps.setString(1,"true");
-				}
-					
-					ps.setString(2, uname);
+					ps.setString(1, faultID);
 					
 					
 					
 				ps.executeUpdate();
 				
-				response.sendRedirect("viewUsers");
+				response.sendRedirect("Faults" + faultID);
 				
 				
 					
 			} catch (Exception e) {
 				System.out.println(e);
-				response.sendRedirect("viewUsers");
+				response.sendRedirect("Faults" + faultID);
 			}
 			
 			try {
@@ -132,9 +113,7 @@ public class editUser extends HttpServlet {
 			
 		
 		}
-		
-		//response.sendRedirect("viewUsers");
-		
+		 
 	}
 
 	/**

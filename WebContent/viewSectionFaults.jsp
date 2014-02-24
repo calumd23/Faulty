@@ -11,7 +11,7 @@
 	<%
 	
 try{
-	if(session.getAttribute("loggedIn").equals("true")) {
+	if(session.getAttribute("permissions").equals("admin")) {
 		int sectionNum = Integer.parseInt(request.getAttribute("sectionID").toString());
 		String section = null;
 		if (sectionNum == 1){
@@ -24,8 +24,8 @@ try{
 		%><h2>Viewing Faults by Section: <%=section %></h2><%
 		List<String> faultIds = (List<String>)request.getAttribute("faultIds");
 		List<String> summaries = (List<String>)request.getAttribute("summaries");
-		
-		if (faultIds == null){
+		System.out.println(faultIds);
+		if (faultIds.equals("[]")){
 			%> <p>No faults were found in this section</p> <%
 		}else{
 			Iterator<String> iterator;

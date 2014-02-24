@@ -21,6 +21,7 @@ try{
 		<%
 		System.out.println("Faults in render");
 		List<FaultsStore> lFaults = (List<FaultsStore>)request.getAttribute("Faults");
+		
 		if (lFaults==null){
 		 %>
 			<p>No faults found</p>

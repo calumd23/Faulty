@@ -89,6 +89,7 @@ public class Dbutils {
 				+ "`firstName` VARCHAR(45) NOT NULL,"
 				+ "`lastName` VARCHAR(45) NOT NULL,"
 				+ "`permissions` ENUM('admin','dev') NOT NULL DEFAULT 'dev',"
+				+ "`enabled` ENUM('true','false') NOT NULL DEFAULT 'true',"
 				+ "PRIMARY KEY (`idauthor`))" + "ENGINE = InnoDB;";
 		try {
 			pmst = Conn.prepareStatement(sqlQuery);
@@ -113,6 +114,7 @@ public class Dbutils {
 				+ "`details` VARCHAR(100) NULL,"
 				+ "`author_idauthor` INT NOT NULL,"
 				+ "`section_idsection` INT NOT NULL,"
+				+ "`solved` ENUM('true','false') NOT NULL DEFAULT 'false',"
 				+ "PRIMARY KEY (`idfault`),"
 				+ "INDEX `fk_fault_author_idx` (`author_idauthor` ASC),"
 				+ "INDEX `fk_fault_section1_idx` (`section_idsection` ASC),"

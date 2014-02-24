@@ -62,11 +62,14 @@ public class viewFault extends HttpServlet {
 				String details = rs.getString("details");
 				int author = rs.getInt("author_idauthor");
 				int section = rs.getInt("section_idsection");
+				String solved = rs.getString("solved");
 				
 				request.setAttribute("summary", summary);
 				request.setAttribute("details", details);
 				request.setAttribute("author", author);
 				request.setAttribute("section", section);
+				request.setAttribute("solved", solved);
+				request.setAttribute("faultid", idNum);
 				
 				RequestDispatcher rd = request.getRequestDispatcher("viewFault.jsp");
 				

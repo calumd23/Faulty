@@ -9,14 +9,6 @@
 <body>
 
 <%
-try{
-	if(session.getAttribute("adminCreated").equals("true")){
-		%><p>Admin Created!</p><%
-		session.removeAttribute("adminCreated");
-	}
-} catch (Exception e) { 
-	
-}
 
 try{
 		if(session.getAttribute("permissions").equals("admin")) {
@@ -35,6 +27,7 @@ try{
 			<h2> Developer Homepage</h2>
 			<h3> Welcome <%=session.getAttribute("username") %></h3> <br>
 			<a href= "logFault.jsp">Log a Fault</a> <br>
+			<a href= "viewAuthor?id=<%=session.getAttribute("id") %>">View Your Faults</a>
 			<br>
 			<a href="logout.jsp">Log Out</a>
 			<%
